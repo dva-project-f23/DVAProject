@@ -7,7 +7,7 @@ Team 21 - DVA Project
 This project uses [Poetry](https://python-poetry.org/) for dependency management. To install Poetry, follow the instructions [here](https://python-poetry.org/docs/#installation).
 
 ## Setup
-To install the dependencies, run `poetry install` in the root directory of the project.
+To install the dependencies, run `poetry install` in the root directory of the project. Once it is installed, try `poetry shell` to activate the environment. This should enable the `poe` command.
 
 VS Code should also prompt you to install the recommended extensions upon opening the project. They include the Python extension, the Black formatter, and iSort formatter. When you save a file, the formatters will automatically run. 
 
