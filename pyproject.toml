@@ -28,7 +28,9 @@ isort = "^5.12.0"
 [tool.poe.tasks]
 start-dev = "streamlit run review_visualizer/app/main.py"
 clean = "pyclean ."
-format = "black ."
+blk = "black ."
+fmt = "isort ."
+format = ["blk", "fmt"]
 test = "pytest"
 
 [build-system]

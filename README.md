@@ -19,6 +19,9 @@ To enable a smoother developer experience, visit the website on `localhost:8501`
 ## Running Tests
 To run the tests, run `poe test` in the root directory of the project.
 
+## Formatting
+To format files, run `poe format` in the root directory of the project.
+
 ## Utility Scripts
 To clean up the project, run `poe clean` in the root directory of the project. This will remove all of the generated `__pycache__` folders and `*.pyc` files.
 
