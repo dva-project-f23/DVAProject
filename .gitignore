@@ -3,6 +3,7 @@
 
 ### DVA-Project Specifc ###
 scripts/reviews_Electronics_5.json
+*.gz
 
 ### Database ###
 *.accdb
