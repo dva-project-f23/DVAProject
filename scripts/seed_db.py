@@ -1,10 +1,12 @@
 import json
+
 from dotenv import load_dotenv
 
 load_dotenv()
 from datetime import datetime
-from review_visualizer.db.session import get_db, init_db
+
 from review_visualizer.db.models import Review
+from review_visualizer.db.session import get_db, init_db
 
 init_db()
 with open("reviews_Electronics_5.json") as f:

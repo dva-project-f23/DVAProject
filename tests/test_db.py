@@ -1,9 +1,11 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 from sqlalchemy import create_engine, text
+
 from review_visualizer.db.session import get_db, init_db
 
 

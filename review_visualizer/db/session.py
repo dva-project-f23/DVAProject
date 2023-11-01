@@ -1,9 +1,10 @@
 import os
 from contextlib import contextmanager
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .models import Base
 
+from .models import Base
 
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.environ.get("PASSWORD")

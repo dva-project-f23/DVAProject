@@ -23,6 +23,9 @@ jobs:
     - name: Check code formatting with black
       run: poetry run black . --check
 
+    - name: Check import sorting with isort
+      run: poetry run isort -c . --profile black
+
     - name: Run tests
       env:
         USERNAME: ${{ secrets.USERNAME }}
