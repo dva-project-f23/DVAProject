@@ -24,6 +24,9 @@ jobs:
       run: poetry run black . --check
 
     - name: Run tests
+      env:
+        USERNAME: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
       run: poetry run pytest
 
     - name: Upload test results
