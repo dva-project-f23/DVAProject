@@ -1,8 +1,4 @@
-"""
-Example Code
-"""
-
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, JSON, Text
+from sqlalchemy import Column, DateTime, Float, Integer, String, JSON, Text
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
