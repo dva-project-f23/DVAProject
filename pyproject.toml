@@ -14,6 +14,7 @@ st-pages = "^0.4.5"
 plotly-express = "^0.4.1"
 sqlalchemy = "^2.0.22"
 streamlit-searchbox = "^0.1.6"
+mysql-connector-python = "^8.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pyclean = "^2.7.5"
@@ -21,6 +22,7 @@ black = "^23.10.1"
 pytest = "^7.4.3"
 poethepoet = "^0.24.1"
 watchdog = "^3.0.0"
+python-dotenv = "^1.0.0"
 
 [tool.poe.tasks]
 start-dev = "streamlit run review_visualizer/app/main.py"

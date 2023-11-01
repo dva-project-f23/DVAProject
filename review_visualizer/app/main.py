@@ -1,7 +1,12 @@
 import streamlit as st
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from st_pages import Page, show_pages
 
 from review_visualizer.db.session import get_db, init_db
+
 
 st.set_page_config(
     page_title="Review Visualizer",
