@@ -16,3 +16,6 @@ class Review(Base):
     overall = Column(Float)
     summary = Column(Text)
     unixReviewTime = Column(DateTime)
+
+    def __repr__(self):
+        return self.reviewerName
