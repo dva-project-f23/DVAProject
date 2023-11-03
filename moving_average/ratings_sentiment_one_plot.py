@@ -70,6 +70,7 @@ fsentiment = open('review_sentiment_preds.csv')
 reader = csv.reader(fsentiment)
 next(reader)
 
+total_reviews = [0, 0]
 sentiments = dict()
 for line in fsentiment:
 	s = line.split(",")
@@ -80,6 +81,7 @@ for line in fsentiment:
 	if my not in sentiments:
 		sentiments[my] = [0, 0]
 	sentiments[my][sentiment] += 1
+	total_reviews[sentiment] += 1
 
 smallest_key = min(sentiments, key=lambda x: x)
 largest_key = max(sentiments, key=lambda x: x) + relativedelta.relativedelta(months=2)
@@ -123,18 +125,20 @@ while (curr <= largest_key):
 x_list = [t[0] for t in moving_average]
 y2_list = [t[1] for t in moving_average]
 df = pd.DataFrame({'Date':x_list, 'Rating':y_list, 'Sentiment':y2_list})
-print(df['Rating'])
-print(df['Sentiment'])
-fig = make_subplots(specs=[[{"secondary_y": True}]])
+fig = make_subplots(rows=2, cols=1, specs=[[{"type": "xy", "secondary_y": True}], [{'type':'pie'}]], subplot_titles=("Ratings and Sentiment", "Overall Sentiment"))
 fig.add_trace(
     go.Scatter(x=df['Date'], y=df['Rating'], mode='lines', name="Ratings"),
-    secondary_y=False)
+    secondary_y=False, row=1, col=1)
 fig.add_trace(
     go.Scatter(x=df['Date'], y=df['Sentiment'], mode='lines', name="Sentiment"),
-    secondary_y=True)
-fig.update_layout(title_text="Ratings and Sentiment")
-fig.update_xaxes(title_text="Date")
-fig.update_yaxes(title_text="Rating", range=[1, 5], secondary_y=False)
-fig.update_yaxes(title_text="Sentiment", range=[0, 1], secondary_y=True)
+    secondary_y=True, row=1, col=1)
+fig.add_trace(go.Pie(
+	labels = ["Negative", "Positive"], 
+	values = total_reviews), row=2, col=1)
+fig['layout']['xaxis'].update(title_text="Date")
+fig['layout']['yaxis'].update(title_text="Rating", range=[1, 5])
+fig['layout']['yaxis2'].update(title_text="Sentiment", range=[0, 1])
+#fig.update_yaxes(title_text="Rating", range=[1, 5], secondary_y=False)
+#fig.update_yaxes(title_text="Sentiment", range=[0, 1], secondary_y=True)
 fig.show()
 
