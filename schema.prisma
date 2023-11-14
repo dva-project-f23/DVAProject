@@ -1,0 +1,69 @@
+datasource db {
+    // could be postgresql or mysql
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
+}
+
+generator db {
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
+    recursive_type_depth = 5
+    previewFeatures      = ["fullTextIndex", "fullTextSearch"]
+}
+
+enum ReviewSentiment {
+    NULL
+    POSITIVE
+    NEGATIVE
+    NEUTRAL
+}
+
+model Review {
+    id             Int             @id @default(autoincrement())
+    asin           String          @unique
+    reviewerID     String
+    reviewerName   String?
+    helpfulCount   Int?
+    totalHelpful   Int?
+    reviewText     String          @db.Text
+    overall        Float
+    summary        String          @db.Text
+    unixReviewTime DateTime
+    sentiment      ReviewSentiment @default(NULL)
+
+    product Product @relation(fields: [asin], references: [asin])
+}
+
+model Category {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+
+    products Product[]
+}
+
+model RelatedProduct {
+    id            Int     @id @default(autoincrement())
+    asin          String
+    related_asin  String
+    relation_type String
+    productId     Int
+    product       Product @relation(fields: [productId], references: [id])
+}
+
+model Product {
+    id              Int     @id @default(autoincrement())
+    asin            String  @unique
+    title           String
+    price           Float
+    imUrl           String?
+    primaryCategory String?
+    salesRank       Int?
+    brand           String?
+
+    reviews         Review[]
+    relatedProducts RelatedProduct[]
+    categories      Category[]
+
+    @@fulltext([title])
+}

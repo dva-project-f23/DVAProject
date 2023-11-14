@@ -5,8 +5,6 @@ load_dotenv()
 
 from st_pages import Page, show_pages
 
-from review_visualizer.db.session import get_db, init_db
-
 st.set_page_config(
     page_title="Review Visualizer",
     page_icon="📊",
@@ -23,15 +21,9 @@ show_pages(
 )
 
 
-def initialize_database():
-    get_db()
-    init_db()
-
-
 def main():
     st.write("Please select a page from the sidebar to get started.")
 
 
 if __name__ == "__main__":
-    initialize_database()
     main()

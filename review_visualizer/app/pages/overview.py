@@ -1,11 +1,12 @@
+import asyncio
+import html
 from typing import Any, List
 
 import streamlit as st
 from st_pages import add_page_title
 from streamlit_searchbox import st_searchbox
 
-from review_visualizer.db.models import Review
-from review_visualizer.db.session import get_db
+from review_visualizer.db.prisma import PrismaClient
 
 add_page_title("Overview")
 
@@ -14,34 +15,41 @@ from dataclasses import dataclass
 
 @dataclass
 class SearchResults:
-    reviewID: int
-    reviewerName: str
+    asin: str
+    title: str
 
     def __repr__(self):
-        return self.reviewerName
+        return html.unescape(self.title)
 
 
-def search_results(query: str) -> List[Any]:
+async def search_results(query: str) -> List[Any]:
     # Use database to search for query
-    with get_db() as db:
-        # Use sql like to search for query
-        # Return only reviewID and reviewerName
-        # Limit to 10 results
-        results = (
-            db.query(Review.reviewID, Review.reviewerName)
-            .filter(Review.reviewerName.like(f"%{query}%"))
-            .limit(10)
+    async with PrismaClient() as prisma:
+        results = await prisma.product.find_many(
+            where={
+                "title": {
+                    "search": query,
+                }
+            },
+            take=10,
         )
 
     return [
-        SearchResults(reviewID=reviewID, reviewerName=reviewerName)
-        for reviewID, reviewerName in results
+        SearchResults(
+            asin=result.asin,
+            title=result.title,
+        )
+        for result in results
     ]
+
+
+def search_results_sync(query: str) -> List[Any]:
+    return asyncio.run(search_results(query))
 
 
 # Search bar
 product = st_searchbox(
-    search_results,
+    search_results_sync,
     placeholder="Search for a product",
     key="product_search",
 )
