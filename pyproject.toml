@@ -15,6 +15,7 @@ plotly-express = "^0.4.1"
 sqlalchemy = "^2.0.22"
 streamlit-searchbox = "^0.1.6"
 mysql-connector-python = "^8.2.0"
+tqdm = "^4.66.1"
 
 [tool.poetry.group.dev.dependencies]
 pyclean = "^2.7.5"

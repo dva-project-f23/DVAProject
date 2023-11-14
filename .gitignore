@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,macos,linux,windows,database,microsoftoffice
 
 ### DVA-Project Specifc ###
-scripts/reviews_Electronics_5.json
+scripts/**/*.json
 *.gz
 
 ### Database ###
