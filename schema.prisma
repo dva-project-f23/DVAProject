@@ -1,8 +1,8 @@
 datasource db {
     // could be postgresql or mysql
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    // relationMode = "prisma"
 }
 
 generator db {
@@ -64,6 +64,4 @@ model Product {
     reviews         Review[]
     relatedProducts RelatedProduct[]
     categories      Category[]
-
-    @@fulltext([title])
 }
