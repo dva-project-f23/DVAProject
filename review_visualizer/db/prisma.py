@@ -2,8 +2,8 @@ from prisma import Prisma
 
 
 class PrismaClient:
-    def __init__(self):
-        self.db = Prisma()
+    def __init__(self, debug: bool = False):
+        self.db = Prisma(log_queries=debug)
 
     async def __aenter__(self) -> Prisma:
         await self.db.connect()
