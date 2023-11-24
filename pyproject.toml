@@ -28,7 +28,9 @@ python-dotenv = "^1.0.0"
 isort = "^5.12.0"
 
 [tool.poe.tasks]
+dev = ["generate", "start-dev"]
 start-dev = "streamlit run review_visualizer/app/main.py"
+generate = "prisma generate"
 clean = "pyclean ."
 blk = "black ."
 fmt = "isort ."
