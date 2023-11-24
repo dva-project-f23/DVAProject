@@ -1,8 +1,8 @@
 datasource db {
     // could be postgresql or mysql
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-    // relationMode = "prisma"
+    provider     = "postgresql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 generator db {
@@ -21,7 +21,7 @@ enum ReviewSentiment {
 
 model Review {
     id             Int             @id @default(autoincrement())
-    asin           String          @unique
+    asin           String
     reviewerID     String
     reviewerName   String?
     helpfulCount   Int?
@@ -32,7 +32,7 @@ model Review {
     unixReviewTime DateTime
     sentiment      ReviewSentiment @default(NULL)
 
-    product Product @relation(fields: [asin], references: [asin])
+    Product Product? @relation(fields: [asin], references: [asin])
 }
 
 model Category {
@@ -54,8 +54,8 @@ model RelatedProduct {
 model Product {
     id              Int     @id @default(autoincrement())
     asin            String  @unique
-    title           String
-    price           Float
+    title           String?
+    price           Float?
     imUrl           String?
     primaryCategory String?
     salesRank       Int?

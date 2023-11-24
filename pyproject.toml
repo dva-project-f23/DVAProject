@@ -6,7 +6,7 @@ authors = ["Rochan Madhusudhana <rochana.hm@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.12"
+python = ">=3.10,<3.12"
 numpy = "^1.26.1"
 pandas = "^2.1.2"
 streamlit = "^1.28.0"
@@ -17,6 +17,7 @@ streamlit-searchbox = "^0.1.6"
 mysql-connector-python = "^8.2.0"
 tqdm = "^4.66.1"
 prisma = "^0.11.0"
+httpcore = {extras = ["asyncio"], version = "^1.0.2"}
 
 [tool.poetry.group.dev.dependencies]
 pyclean = "^2.7.5"

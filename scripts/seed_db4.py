@@ -34,18 +34,20 @@ with open("metadata.json") as f:
     product_data = f.readlines()
 
 
-async def process_product_line(line, prisma: PrismaClient):
+def process_product_line(line, prisma: PrismaClient):
     # Your existing logic to process a product line
     # Return the Product object instead of adding it to the db session
     data = ast.literal_eval(line)
+    # print(data.get('asin'))
+    # asin_to_look_for = '0594481813'
+    # if data["asin"] == asin_to_look_for:
+    #     print("-----------")
+    #     print("CSER")
+    #     print("-----------")
     
-    asin_to_look_for = '0594481813'
-    if data["asin"] == asin_to_look_for:
-        print("-----------")
-        print("CSER")
-        print("-----------")
-    
-    if not data.get("asin") or not data.get("title") or not data.get("price"):
+    if not data.get("asin"):
+        # print(data.get('asin'), data.get("title"), data.get("price"))
+        print('here1')
         return None
 
     # Add related products
@@ -60,7 +62,7 @@ async def process_product_line(line, prisma: PrismaClient):
                 }
                 related_products.append(related_product)
 
-    product = await prisma.product.create(
+    product = prisma.product.create(
         data={
             "asin": data["asin"],
             "title": data["title"],
@@ -76,11 +78,12 @@ async def process_product_line(line, prisma: PrismaClient):
             "relatedProducts": {"create": related_products},
         }
     )
+    print('here2')
 
     return product
 
 
-async def process_review_line(line, prisma: PrismaClient):
+def process_review_line(line, prisma: PrismaClient):
     # Your existing logic to process a review line
     # Return the Review object instead of adding it to the db session
     data = ast.literal_eval(line)
@@ -92,7 +95,7 @@ async def process_review_line(line, prisma: PrismaClient):
         else None
     )
 
-    review = await prisma.review.create(
+    review = prisma.review.create(
         data={
             "reviewerID": data["reviewerID"],
             "asin": data["asin"],
@@ -115,22 +118,19 @@ def chunks(lst, n):
         yield lst[i : i + n]
 
 
-async def main():
-    async with PrismaClient() as prisma:
+def main():
+    with PrismaClient() as prisma:
         try:
             # Process Products
             tqdm_sync.write("Processing products...")
             for i in tqdm_sync(range(0, len(product_data), BATCH_SIZE), desc="Processing Products"):
                 try:
                     batch_products = product_data[i : i + BATCH_SIZE]
+                    for asin in batch_products:
+                        print(process_product_line(asin, prisma))
                     
-                    tasks = [
-                        process_product_line(asin, prisma) for asin in batch_products
-                    ]
-                    for chunk in tqdm_async(
-                        chunks(tasks, CONCURRENCY), total=len(tasks) // CONCURRENCY
-                    ):
-                        await asyncio.gather(*chunk)  # Correctly await the coroutine
+                    # a = [process_product_line(asin, prisma) for asin in batch_products]
+                    
                 except UniqueViolationError:
                     # tqdm_sync.write("Skipping duplicate product...")
                     continue
@@ -139,32 +139,32 @@ async def main():
                     continue
 
             # Process Reviews
-            tqdm_sync.write("Processing reviews...")
-            for i in tqdm_sync(range(0, len(review_data), BATCH_SIZE), desc="Processing Reviews"):
-                try:
-                    batch_reviews = review_data[i : i + BATCH_SIZE]
-                    tasks = [
-                        process_review_line(line, prisma) for line in batch_reviews
-                    ]
-                    for chunk in tqdm_async(
-                        chunks(tasks, CONCURRENCY), total=len(tasks) // CONCURRENCY
-                    ):
-                        res = await asyncio.gather(*chunk, return_exceptions=True)  # Correctly await the coroutine
-                        for i, e in enumerate(res):
-                            if isinstance(e, Exception):
-                                # print(batch_reviews[i])
-                                # raise e
-                except UniqueViolationError:
-                    tqdm_sync.write("Skipping duplicate review...")
-                    continue
-                except Exception as e:
-                    # print(e)
-                    # print(batch_reviews)
-                    continue
+            # tqdm_sync.write("Processing reviews...")
+            # for i in tqdm_sync(range(0, len(review_data), BATCH_SIZE), desc="Processing Reviews"):
+            #     try:
+            #         batch_reviews = review_data[i : i + BATCH_SIZE]
+            #         tasks = [
+            #             process_review_line(line, prisma) for line in batch_reviews
+            #         ]
+            #         for chunk in tqdm_async(
+            #             chunks(tasks, CONCURRENCY), total=len(tasks) // CONCURRENCY
+            #         ):
+            #             res = await asyncio.gather(*chunk, return_exceptions=True)  # Correctly await the coroutine
+            #             for i, e in enumerate(res):
+            #                 if isinstance(e, Exception):
+            #                     # print(batch_reviews[i])
+            #                     # raise e
+            #     except UniqueViolationError:
+            #         tqdm_sync.write("Skipping duplicate review...")
+            #         continue
+            #     except Exception as e:
+            #         # print(e)
+            #         # print(batch_reviews)
+            #         continue
 
         except Exception as e:
             print(e)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
