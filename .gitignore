@@ -4,6 +4,7 @@
 ### DVA-Project Specifc ###
 scripts/**/*.json
 *.gz
+random/*
 
 ### Database ###
 *.accdb

@@ -28,7 +28,7 @@ async def search_results(query: str) -> List[Any]:
         results = await prisma.product.find_many(
             where={
                 "title": {
-                    "search": query,
+                    "contains": query,
                 }
             },
             take=10,

@@ -1,11 +1,6 @@
 import ast
 import asyncio
-import json
-import os
-import pickle
 from datetime import datetime
-from pprint import pprint
-from typing import Awaitable
 
 from dotenv import load_dotenv
 from tqdm import tqdm as tqdm_sync
@@ -13,11 +8,8 @@ from tqdm.asyncio import tqdm as tqdm_async
 
 load_dotenv()
 
-from prisma.types import (
-    ProductCreateWithoutRelationsInput,
-    RelatedProductCreateWithoutRelationsInput,
-    ReviewCreateWithoutRelationsInput,
-)
+from prisma.errors import UniqueViolationError
+from prisma.types import RelatedProductCreateWithoutRelationsInput
 
 from review_visualizer.db.prisma import PrismaClient
 
@@ -38,7 +30,7 @@ async def process_product_line(line, prisma: PrismaClient):
     # Your existing logic to process a product line
     # Return the Product object instead of adding it to the db session
     data = ast.literal_eval(line)
-    if not data.get("asin") or not data.get("title") or not data.get("price"):
+    if not data.get("asin"):
         return None
 
     # Add related products
@@ -56,8 +48,8 @@ async def process_product_line(line, prisma: PrismaClient):
     product = await prisma.product.create(
         data={
             "asin": data["asin"],
-            "title": data["title"],
-            "price": data["price"],
+            "title": data.get("title", None),
+            "price": data.get("price", None),
             "imUrl": data.get("imUrl", None),
             "primaryCategory": list(data["salesRank"].keys())[0]
             if data.get("salesRank")
@@ -110,27 +102,48 @@ def chunks(lst, n):
 
 async def main():
     async with PrismaClient() as prisma:
-        prisma.product.create
         try:
             # Process Products
             print("Processing products...")
             for i in tqdm_sync(range(0, len(product_data), BATCH_SIZE)):
                 batch_products = product_data[i : i + BATCH_SIZE]
-                tasks = [process_product_line(asin, prisma) for asin in batch_products]
+                tasks = [process_product_line(line, prisma) for line in batch_products]
+
                 for chunk in tqdm_async(
                     chunks(tasks, CONCURRENCY), total=len(tasks) // CONCURRENCY
                 ):
-                    await asyncio.gather(*chunk)  # Correctly await the coroutine
+                    try:
+                        res = await asyncio.gather(*chunk, return_exceptions=True)
+                        for r in res:
+                            if isinstance(r, Exception):
+                                print(r)
+                    except UniqueViolationError:
+                        pass
+                    except Exception as e:
+                        print(e)
+                    finally:
+                        continue
 
             # Process Reviews
             print("Processing reviews...")
             for i in tqdm_sync(range(0, len(review_data), BATCH_SIZE)):
                 batch_reviews = review_data[i : i + BATCH_SIZE]
                 tasks = [process_review_line(line, prisma) for line in batch_reviews]
+
                 for chunk in tqdm_async(
                     chunks(tasks, CONCURRENCY), total=len(tasks) // CONCURRENCY
                 ):
-                    await asyncio.gather(*chunk)  # Correctly await the coroutine
+                    try:
+                        res = await asyncio.gather(*chunk, return_exceptions=True)
+                        for r in res:
+                            if isinstance(r, Exception):
+                                print(r)
+                    except UniqueViolationError:
+                        pass
+                    except Exception as e:
+                        print(e)
+                    finally:
+                        continue
 
         except Exception as e:
             print(e)
