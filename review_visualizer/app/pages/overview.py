@@ -22,6 +22,8 @@ from dataclasses import dataclass
 class SearchResults:
     asin: str
     title: str
+    price: float
+    brand: str
 
     def __repr__(self):
         return html.unescape(self.title)
@@ -56,6 +58,8 @@ async def search_results(query: str) -> List[Any]:
         SearchResults(
             asin=result.asin,
             title=result.title,
+            price=result.price,
+            brand=result.brand,
         )
         for result in results
     ]
@@ -73,6 +77,15 @@ product = st_searchbox(
 )
 
 if product:
+    st.write("Amazon Standard Identification Number: " + product.asin)
+    if (product.brand == None):
+        st.write("Brand: n/a")
+    else:
+        st.write("Brand: " + product.brand)
+    if (product.price == None):
+        st.write("Price: n/a")
+    else:
+        st.write("Price: " + str(round(product.price, 2)) + " $")
     df, total_reviews = asyncio.run(ma_average.movingavg(product.asin))
     choice_date = df["Date"][0].strftime('%Y-%m')
     earliest = df["Date"][0]
