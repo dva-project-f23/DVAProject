@@ -103,8 +103,10 @@ if search_res:
     if choice_date:
         curr = datetime.strptime(choice_date, "%Y-%m")
         diff = relativedelta.relativedelta(curr, earliest)
-        fig = ma_average.make_graph(
+        fig1, fig2 = ma_average.make_graph(
             df[(diff.months + 12 * diff.years) :], total_reviews
         )
-        fig.update_layout(height=600)
-        st.plotly_chart(fig, use_container_width=True, height=600)
+        fig1.update_layout(height=350)
+        fig2.update_layout(height=350)
+        st.plotly_chart(fig1, use_container_width=True, height=350)
+        st.plotly_chart(fig2, use_container_width=True, height=350)
