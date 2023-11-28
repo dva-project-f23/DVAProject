@@ -1,8 +1,8 @@
 import pandas as pd
 import streamlit as st
 from st_pages import add_page_title
-
-from review_visualizer.db.session2 import get_db
+#
+# from review_visualizer.db.session2 import get_db
 from review_visualizer.visualizations.graphs import example_graph
 
 add_page_title("Example")
