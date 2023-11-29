@@ -114,7 +114,7 @@ if search_res:
         curr = choice_date
         diff = relativedelta.relativedelta(curr, earliest)
         fig1, fig2 = ma_average.make_graph(
-            df[(diff.months + 12 * diff.years) :], total_reviews
+            df[(diff.months + 12 * diff.years) :], total_reviews[diff.months + 12 * diff.years]
         )
         fig1.update_layout(height=350)
         fig2.update_layout(height=350)

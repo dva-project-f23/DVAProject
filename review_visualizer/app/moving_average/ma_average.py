@@ -14,7 +14,7 @@ async def movingavg(asinId):
         curr_reviews = await db.review.find_many(where={"asin": asinId})
         ratings = dict()
         sentiments = dict()
-        total_reviews = [0, 0]
+        total_reviews = []
         for rew in curr_reviews:
             rating = int(rew.overall)
             sentiment = rew.sentiment
@@ -27,10 +27,8 @@ async def movingavg(asinId):
                 sentiments[my] = [0, 0]
             if sentiment == "POSITIVE":
                 sentiments[my][1] += 1
-                total_reviews[1] += 1
             elif sentiment == "NEGATIVE":
                 sentiments[my][0] += 1
-                total_reviews[0] += 1
 
         smallest_key = min(sentiments, key=lambda x: x)
         largest_key = max(sentiments, key=lambda x: x) + relativedelta.relativedelta(
@@ -152,6 +150,20 @@ async def movingavg(asinId):
             tup = (months_dq[2], average_sentiment)
             moving_average.append(tup)
 
+        total_reviews.append([0, 0])
+        curr = largest_key - relativedelta.relativedelta(months=1)
+        while curr >= smallest_key:
+            last = total_reviews[len(total_reviews)-1]
+            if curr in sentiments:
+                curr_sentiment = sentiments[curr]
+                curr_sentiment[0] += last[0]
+                curr_sentiment[1] += last[1]
+                total_reviews.append(curr_sentiment)
+            else:
+                total_reviews.append(last)
+            curr = curr - relativedelta.relativedelta(months=1)
+
+        total_reviews.reverse()
         x_list = [t[0] for t in moving_average]
         y2_list = [t[1] for t in moving_average]
 
