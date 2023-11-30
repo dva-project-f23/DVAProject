@@ -3,6 +3,7 @@ from datetime import datetime
 
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 from dateutil import relativedelta
 from plotly.subplots import make_subplots
 
@@ -211,5 +212,13 @@ def make_graph(df, total_reviews):
         )
     )
     fig2.update_layout(margin=dict(t=50, b=50, l=50, r=50))
+
+    # use the pastel discrete color scheme
+    fig1.update_layout(
+        colorway=px.colors.qualitative.Pastel,
+    )
+    fig2.update_layout(
+        colorway=px.colors.qualitative.Pastel,
+    )
 
     return fig1, fig2
