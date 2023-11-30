@@ -153,7 +153,7 @@ async def movingavg(asinId):
         total_reviews.append([0, 0])
         curr = largest_key - relativedelta.relativedelta(months=1)
         while curr >= smallest_key:
-            last = total_reviews[len(total_reviews)-1]
+            last = total_reviews[len(total_reviews) - 1]
             if curr in sentiments:
                 curr_sentiment = sentiments[curr]
                 curr_sentiment[0] += last[0]
@@ -195,9 +195,7 @@ def make_graph(df, total_reviews):
         ),
         secondary_y=True,
     )
-    fig1.update_layout(
-        title_text="Ratings and Sentiment"
-    )
+    fig1.update_layout(title_text="Ratings and Sentiment")
     fig1["layout"]["xaxis"].update(title_text="Date")
     fig1["layout"]["yaxis"].update(title_text="Rating", range=[1, 5])
     fig1["layout"]["yaxis2"].update(title_text="Sentiment", range=[-1, 1])
@@ -213,6 +211,5 @@ def make_graph(df, total_reviews):
         )
     )
     fig2.update_layout(margin=dict(t=50, b=50, l=50, r=50))
-
 
     return fig1, fig2

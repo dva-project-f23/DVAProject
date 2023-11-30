@@ -97,14 +97,14 @@ if search_res:
     df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin))
     choice_date = df["Date"][0].strftime("%Y-%m")
     earliest = df["Date"][0]
-    oldest_review_date = df['Date'].min()
-    latest_review_date = df['Date'].max()
+    oldest_review_date = df["Date"].min()
+    latest_review_date = df["Date"].max()
 
     choice_date = st.date_input(
         "Select start date for the graph",
         value=oldest_review_date,
         min_value=oldest_review_date,
-        max_value=latest_review_date
+        max_value=latest_review_date,
     )
     # choice_date = st.selectbox(
     #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
@@ -114,7 +114,8 @@ if search_res:
         curr = choice_date
         diff = relativedelta.relativedelta(curr, earliest)
         fig1, fig2 = ma_average.make_graph(
-            df[(diff.months + 12 * diff.years) :], total_reviews[diff.months + 12 * diff.years]
+            df[(diff.months + 12 * diff.years) :],
+            total_reviews[diff.months + 12 * diff.years],
         )
         fig1.update_layout(height=350)
         fig2.update_layout(height=350)
