@@ -2,11 +2,15 @@ from collections import deque
 from datetime import datetime
 
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 from dateutil import relativedelta
 from plotly.subplots import make_subplots
 
 from review_visualizer.db.prisma import PrismaClient
+
+COMMON_FONT = dict(family="Arial, sans-serif", size=14, color="black")
+T10 = px.colors.qualitative.T10
 
 
 async def movingavg(asinId):
@@ -153,7 +157,7 @@ async def movingavg(asinId):
         total_reviews.append([0, 0])
         curr = largest_key - relativedelta.relativedelta(months=1)
         while curr >= smallest_key:
-            last = total_reviews[len(total_reviews)-1]
+            last = total_reviews[len(total_reviews) - 1]
             if curr in sentiments:
                 curr_sentiment = sentiments[curr]
                 curr_sentiment[0] += last[0]
@@ -181,7 +185,7 @@ def make_graph(df, total_reviews):
             y=df["Rating"],
             mode="lines",
             name="Ratings",
-            line_color="purple",
+            line_color=T10[2],
         ),
         secondary_y=False,
     )
@@ -191,16 +195,22 @@ def make_graph(df, total_reviews):
             y=df["Sentiment"],
             mode="lines",
             name="Sentiment",
-            line_color="green",
+            line_color=T10[6],
         ),
         secondary_y=True,
     )
     fig1.update_layout(
-        title_text="Ratings and Sentiment"
+        title_text="Ratings and Sentiment",
+        title_font_size=20,  # Increase title font size
+        xaxis_title="Date",
+        xaxis_title_font_size=16,  # Increase x-axis label font size
+        yaxis_title="Rating",
+        yaxis_title_font_size=16,  # Increase y-axis label font size
+        yaxis2_title="Sentiment",
+        yaxis2_title_font_size=16,  # Increase secondary y-axis label font size
+        legend_font_size=14,  # Increase legend font size
+        # ... [other layout properties] ...
     )
-    fig1["layout"]["xaxis"].update(title_text="Date")
-    fig1["layout"]["yaxis"].update(title_text="Rating", range=[1, 5])
-    fig1["layout"]["yaxis2"].update(title_text="Sentiment", range=[-1, 1])
     fig2 = make_subplots(
         specs=[[{"type": "pie"}]],
     )
@@ -208,11 +218,16 @@ def make_graph(df, total_reviews):
         go.Pie(
             labels=["Negative", "Positive"],
             values=total_reviews,
-            marker_colors=["red", "blue"],
-            title="Overall Sentiment",
+            textinfo="percent",  # Choose what info to display (label, percent, value)
+            insidetextfont=dict(size=18),  # Increase the font size for inside text
+            marker_colors=[T10[1], T10[0]],
         )
     )
-    fig2.update_layout(margin=dict(t=50, b=50, l=50, r=50))
-
+    fig2.update_layout(
+        title_font_size=20,  # Increase title font size
+        legend_font_size=14,  # Increase legend font size
+        margin=dict(t=50, b=50, l=50, r=50),
+        title_text="Overall Sentiment",
+    )
 
     return fig1, fig2

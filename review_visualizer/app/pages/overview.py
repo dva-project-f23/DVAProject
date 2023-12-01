@@ -1,9 +1,7 @@
 import asyncio
 import html
-from datetime import datetime
-from typing import Any, List
+from typing import List
 
-import pandas as pd
 import streamlit as st
 from dateutil import relativedelta
 from st_pages import add_page_title
@@ -11,7 +9,6 @@ from streamlit_searchbox import st_searchbox
 
 from moving_average import ma_average
 from review_visualizer.db.prisma import PrismaClient
-from review_visualizer.visualizations.graphs import example_graph
 
 add_page_title("Overview")
 
@@ -97,14 +94,14 @@ if search_res:
     df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin))
     choice_date = df["Date"][0].strftime("%Y-%m")
     earliest = df["Date"][0]
-    oldest_review_date = df['Date'].min()
-    latest_review_date = df['Date'].max()
+    oldest_review_date = df["Date"].min()
+    latest_review_date = df["Date"].max()
 
     choice_date = st.date_input(
         "Select start date for the graph",
         value=oldest_review_date,
         min_value=oldest_review_date,
-        max_value=latest_review_date
+        max_value=latest_review_date,
     )
     # choice_date = st.selectbox(
     #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
@@ -114,9 +111,9 @@ if search_res:
         curr = choice_date
         diff = relativedelta.relativedelta(curr, earliest)
         fig1, fig2 = ma_average.make_graph(
-            df[(diff.months + 12 * diff.years) :], total_reviews[diff.months + 12 * diff.years]
+            df[(diff.months + 12 * diff.years) :],
+            total_reviews[diff.months + 12 * diff.years],
         )
-        fig1.update_layout(height=350)
-        fig2.update_layout(height=350)
-        st.plotly_chart(fig1, use_container_width=True, height=350)
-        st.plotly_chart(fig2, use_container_width=True, height=350)
+
+        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
