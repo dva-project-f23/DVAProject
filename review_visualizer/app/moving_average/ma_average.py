@@ -13,7 +13,7 @@ COMMON_FONT = dict(family="Arial, sans-serif", size=14, color="black")
 T10 = px.colors.qualitative.T10
 
 
-async def movingavg(asinId):
+async def movingavg(asinId, num_months):
     async with PrismaClient() as db:
         curr_reviews = await db.review.find_many(where={"asin": asinId})
         ratings = dict()
@@ -36,7 +36,7 @@ async def movingavg(asinId):
 
         smallest_key = min(sentiments, key=lambda x: x)
         largest_key = max(sentiments, key=lambda x: x) + relativedelta.relativedelta(
-            months=2
+            months=num_months + 1
         )
 
         moving_average = []
@@ -62,7 +62,7 @@ async def movingavg(asinId):
                     + curr_rating[3]
                     + curr_rating[4]
                 )
-            curr = curr + relativedelta.relativedelta(months=1)
+            curr = curr + relativedelta.relativedelta(months=num_months)
 
         tup = (months_dq[2], sum_ratings / num_ratings)
         moving_average.append(tup)
@@ -102,7 +102,7 @@ async def movingavg(asinId):
                     + curr_rating[3]
                     + curr_rating[4]
                 )
-            curr = curr + relativedelta.relativedelta(months=1)
+            curr = curr + relativedelta.relativedelta(months=num_months)
             average_rating = 0
             if num_ratings == 0:
                 average_rating = moving_average[len(moving_average) - 1][1]
@@ -127,7 +127,7 @@ async def movingavg(asinId):
                 neg_sentiments += curr_sentiment[0]
                 pos_sentiments += curr_sentiment[1]
                 num_sentiments += curr_sentiment[0] + curr_sentiment[1]
-            curr = curr + relativedelta.relativedelta(months=1)
+            curr = curr + relativedelta.relativedelta(months=num_months)
 
         tup = (months_dq[2], (pos_sentiments - neg_sentiments) / num_sentiments)
         moving_average.append(tup)
@@ -145,7 +145,7 @@ async def movingavg(asinId):
                 neg_sentiments += curr_sentiment[0]
                 pos_sentiments += curr_sentiment[1]
                 num_sentiments += curr_sentiment[0] + curr_sentiment[1]
-            curr = curr + relativedelta.relativedelta(months=1)
+            curr = curr + relativedelta.relativedelta(months=num_months)
             average_sentiment = 0
             if num_sentiments == 0:
                 average_sentiment = moving_average[len(moving_average) - 1][1]
@@ -155,7 +155,7 @@ async def movingavg(asinId):
             moving_average.append(tup)
 
         total_reviews.append([0, 0])
-        curr = largest_key - relativedelta.relativedelta(months=1)
+        curr = largest_key - relativedelta.relativedelta(months=num_months)
         while curr >= smallest_key:
             last = total_reviews[len(total_reviews) - 1]
             if curr in sentiments:
@@ -165,7 +165,7 @@ async def movingavg(asinId):
                 total_reviews.append(curr_sentiment)
             else:
                 total_reviews.append(last)
-            curr = curr - relativedelta.relativedelta(months=1)
+            curr = curr - relativedelta.relativedelta(months=num_months)
 
         total_reviews.reverse()
         x_list = [t[0] for t in moving_average]
