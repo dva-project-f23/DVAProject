@@ -90,8 +90,22 @@ if search_res:
     if search_res.product.imUrl:
         st.image(search_res.product.imUrl, width=300)
 
+    # choice_date = st.selectbox(
+    #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
+    # )
+
+    # Add a slider to select the number of months to average over
+    num_months = st.slider(
+        "Select number of months to average over",
+        min_value=1,
+        max_value=5,
+        value=1,
+        step=1,
+    )
+
+    df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin, num_months))
+
     st.subheader("Product Review Analysis")
-    df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin))
     choice_date = df["Date"][0].strftime("%Y-%m")
     earliest = df["Date"][0]
     oldest_review_date = df["Date"].min()
@@ -103,9 +117,7 @@ if search_res:
         min_value=oldest_review_date,
         max_value=latest_review_date,
     )
-    # choice_date = st.selectbox(
-    #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
-    # )
+
     if choice_date:
         # curr = datetime.strptime(choice_date, "%Y-%m")
         curr = choice_date
