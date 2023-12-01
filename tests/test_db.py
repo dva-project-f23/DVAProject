@@ -10,6 +10,10 @@ from sqlalchemy import create_engine, text
 # from review_visualizer.db.session import get_db, init_db
 
 
+def test_placeholder():
+    assert True
+
+
 # def test_init_db():
 #     # Ensure that init_db doesn't raise any exceptions
 #     init_db()
