@@ -1,8 +1,12 @@
 import streamlit as st
+
+st.set_page_config(layout="wide")
+
 from st_pages import add_page_title
 from streamlit.components.v1 import iframe
 
 SURVEY_URL = "https://gatech.co1.qualtrics.com/jfe/form/SV_0DSIOw3KU4UbYMu"
+
 
 add_page_title("Survey")
 
