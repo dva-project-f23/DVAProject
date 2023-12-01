@@ -12,7 +12,7 @@ To install the dependencies, run `poetry install` in the root directory of the p
 VS Code should also prompt you to install the recommended extensions upon opening the project. They include the Python extension, the Black formatter, and iSort formatter. When you save a file, the formatters will automatically run. 
 
 ## Running the Project
-To run the project, run `poe start-dev` in the root directory of the project. This will start the streamlit server. You can then access the app at `localhost:8501`.
+To run the project, run `poe dev` in the root directory of the project. This will start the streamlit server. You can then access the app at `localhost:8501`.
 
 To enable a smoother developer experience, visit the website on `localhost:8501`, click the three dots in the top right corner, and enable "Run on Save". This will automatically reload the app when you save a file.
 
