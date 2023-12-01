@@ -5,6 +5,7 @@ load_dotenv()
 
 from st_pages import Page, show_pages
 
+
 st.set_page_config(
     page_title="Review Visualizer",
     page_icon="📊",

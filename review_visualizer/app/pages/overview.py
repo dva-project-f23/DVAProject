@@ -1,9 +1,7 @@
 import asyncio
 import html
-from datetime import datetime
-from typing import Any, List
+from typing import List
 
-import pandas as pd
 import streamlit as st
 from dateutil import relativedelta
 from st_pages import add_page_title
@@ -11,7 +9,6 @@ from streamlit_searchbox import st_searchbox
 
 from moving_average import ma_average
 from review_visualizer.db.prisma import PrismaClient
-from review_visualizer.visualizations.graphs import example_graph
 
 add_page_title("Overview")
 

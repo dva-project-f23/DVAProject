@@ -1,5 +1,4 @@
 import streamlit as st
-from st_pages import add_page_title
 
 st.title("Amazon Product Review Visualizer")
 st.subheader("DVA Fall 2023 - Team 21")

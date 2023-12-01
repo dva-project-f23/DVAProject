@@ -9,8 +9,8 @@ from plotly.subplots import make_subplots
 
 from review_visualizer.db.prisma import PrismaClient
 
-PASTEL = px.colors.qualitative.Pastel
 COMMON_FONT = dict(family="Arial, sans-serif", size=14, color="black")
+T10 = px.colors.qualitative.T10
 
 
 async def movingavg(asinId):
@@ -185,7 +185,7 @@ def make_graph(df, total_reviews):
             y=df["Rating"],
             mode="lines",
             name="Ratings",
-            line_color=PASTEL[0],
+            line_color=T10[2],
         ),
         secondary_y=False,
     )
@@ -195,7 +195,7 @@ def make_graph(df, total_reviews):
             y=df["Sentiment"],
             mode="lines",
             name="Sentiment",
-            line_color=PASTEL[1],
+            line_color=T10[6],
         ),
         secondary_y=True,
     )
@@ -220,7 +220,7 @@ def make_graph(df, total_reviews):
             values=total_reviews,
             textinfo="percent",  # Choose what info to display (label, percent, value)
             insidetextfont=dict(size=18),  # Increase the font size for inside text
-            marker_colors=[PASTEL[2], PASTEL[7]],
+            marker_colors=[T10[1], T10[0]],
         )
     )
     fig2.update_layout(
