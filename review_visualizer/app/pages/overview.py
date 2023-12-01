@@ -114,7 +114,6 @@ if search_res:
             df[(diff.months + 12 * diff.years) :],
             total_reviews[diff.months + 12 * diff.years],
         )
-        fig1.update_layout(height=350)
-        fig2.update_layout(height=350)
-        st.plotly_chart(fig1, use_container_width=True, height=350)
-        st.plotly_chart(fig2, use_container_width=True, height=350)
+
+        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
