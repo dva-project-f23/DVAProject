@@ -100,14 +100,13 @@ if search_res:
         "Select number of months to average over",
         min_value=1,
         max_value=5,
-        value=1,
+        value=5,
         step=1,
     )
 
     df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin, num_months))
 
     st.subheader("Product Review Analysis")
-    choice_date = df["Date"][0].strftime("%Y-%m")
     earliest = df["Date"][0]
     oldest_review_date = df["Date"].min()
     latest_review_date = df["Date"].max()
