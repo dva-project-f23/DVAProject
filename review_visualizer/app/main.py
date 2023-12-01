@@ -16,7 +16,8 @@ show_pages(
     [
         Page("review_visualizer/app/pages/home.py", "Home", "🏠"),
         Page("review_visualizer/app/pages/overview.py", "Overview", "📊"),
-        Page("review_visualizer/app/pages/example.py", "Example", "❕"),
+        # Page("review_visualizer/app/pages/example.py", "Example", "❕"),
+        Page("review_visualizer/app/pages/survey.py", "Survey", "📝"),
     ]
 )
 
