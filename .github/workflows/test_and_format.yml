@@ -19,7 +19,7 @@ jobs:
       run: |
         pip install poetry
         poetry install
-        prisma generate
+        poetry run prisma generate
 
     - name: Check code formatting with black
       run: poetry run black . --check
