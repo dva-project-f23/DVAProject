@@ -3,6 +3,7 @@ import html
 from dataclasses import dataclass
 from typing import List
 
+import pandas as pd
 import streamlit as st
 
 st.set_page_config(layout="wide")
@@ -55,6 +56,28 @@ async def search_results(query: str) -> List[SearchResults]:
     ]
 
 
+async def get_review_stats(asin: str) -> dict:
+    async with PrismaClient() as prisma:
+        tot_review_count = await prisma.review.count(where={"asin": asin})
+        pos_review_count = await prisma.review.count(
+            where={"AND": [{"asin": asin}, {"sentiment": "POSITIVE"}]}
+        )
+        neg_review_count = await prisma.review.count(
+            where={"AND": [{"asin": asin}, {"sentiment": "NEGATIVE"}]}
+        )
+        avg_rating = await prisma.review.find_many(
+            where={"AND": [{"asin": asin}, {"overall": {"gte": 0.0}}]},
+        )
+        avg_rating = sum([review.overall for review in avg_rating]) / len(avg_rating)
+
+    return {
+        "Total": tot_review_count,
+        "Positive": pos_review_count,
+        "Negative": neg_review_count,
+        "Average": avg_rating,
+    }
+
+
 def search_results_sync(query: str) -> List[SearchResults]:
     return asyncio.run(search_results(query))
 
@@ -68,6 +91,10 @@ search_res: SearchResults = st_searchbox(
 
 if search_res:
     st.subheader("Product Information")
+
+    if search_res.product.imUrl:
+        st.image(search_res.product.imUrl, width=300)
+
     st.write("**Amazon Standard Identification Number:** " + search_res.asin)
     st.write(
         f"**Brand:** {search_res.product.brand}" if search_res.product.brand else ""
@@ -88,8 +115,14 @@ if search_res:
         else ""
     )
 
-    if search_res.product.imUrl:
-        st.image(search_res.product.imUrl, width=300)
+    reviews = search_res.product.reviews
+
+    reviews_data = asyncio.run(get_review_stats(search_res.asin))
+
+    reviews_df = pd.DataFrame(reviews_data, index=["Value"])
+
+    st.write("**Review Statistics**")
+    st.table(reviews_df)
 
     # choice_date = st.selectbox(
     #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
