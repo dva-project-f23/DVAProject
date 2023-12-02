@@ -16,6 +16,8 @@ st.set_page_config(
 show_pages(
     [
         Page("review_visualizer/app/pages/home.py", "Home", "🏠"),
+        Page("review_visualizer/app/pages/About.py", "About", "i"),
+        Page("review_visualizer/app/pages/README.py", "README", "📖"),
         Page("review_visualizer/app/pages/overview.py", "Overview", "📊"),
         # Page("review_visualizer/app/pages/example.py", "Example", "❕"),
         Page("review_visualizer/app/pages/survey.py", "Survey", "📝"),
