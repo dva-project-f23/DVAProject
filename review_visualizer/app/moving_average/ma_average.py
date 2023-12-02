@@ -206,9 +206,11 @@ def make_graph(df, total_reviews):
         xaxis_title="Date",
         xaxis_title_font_size=16,  # Increase x-axis label font size
         yaxis_title="Rating",
+        yaxis_range=[1, 5],
         yaxis_title_font_size=16,  # Increase y-axis label font size
         yaxis2_title="Sentiment",
         yaxis2_title_font_size=16,  # Increase secondary y-axis label font size
+        yaxis_range=[-1, 1],
         legend_font_size=14,  # Increase legend font size
         # ... [other layout properties] ...
     )
