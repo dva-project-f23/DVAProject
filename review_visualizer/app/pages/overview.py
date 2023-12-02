@@ -95,6 +95,8 @@ if search_res:
     #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
     # )
 
+    st.subheader("Product Review Analysis")
+
     # Add a slider to select the number of months to average over
     num_months = st.slider(
         "Select number of months to average over",
@@ -106,7 +108,6 @@ if search_res:
 
     df, total_reviews = asyncio.run(ma_average.movingavg(search_res.asin, num_months))
 
-    st.subheader("Product Review Analysis")
     earliest = df["Date"][0]
     oldest_review_date = df["Date"].min()
     latest_review_date = df["Date"].max()

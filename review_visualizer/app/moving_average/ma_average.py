@@ -154,10 +154,11 @@ async def movingavg(asinId, num_months):
             tup = (months_dq[num_months//2], average_sentiment)
             moving_average.append(tup)
 
-        total_reviews.append([0, 0])
-        curr = largest_key - relativedelta.relativedelta(months=1)
+        curr = largest_key
+        last = [0, 0]
         while curr >= smallest_key:
-            last = total_reviews[len(total_reviews) - 1]
+            if (len(total_reviews) != 0):
+                last = total_reviews[len(total_reviews) - 1]
             if curr in sentiments:
                 curr_sentiment = sentiments[curr]
                 curr_sentiment[0] += last[0]
