@@ -5,6 +5,7 @@
 scripts/**/*.json
 *.gz
 random/*
+generated/*
 
 ### Database ###
 *.accdb

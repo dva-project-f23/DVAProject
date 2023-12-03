@@ -13,12 +13,11 @@ from tqdm.asyncio import tqdm as tqdm_async
 
 load_dotenv()
 
-from prisma.types import (
+from generated.prisma.types import (
     ProductCreateWithoutRelationsInput,
     RelatedProductCreateWithoutRelationsInput,
     ReviewCreateWithoutRelationsInput,
 )
-
 from review_visualizer.db.prisma import PrismaClient
 
 BATCH_SIZE = 1000

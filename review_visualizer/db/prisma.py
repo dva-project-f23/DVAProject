@@ -1,4 +1,4 @@
-from prisma import Prisma
+from generated.prisma import Prisma
 
 
 class PrismaClient:

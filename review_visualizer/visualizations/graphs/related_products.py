@@ -3,8 +3,8 @@ import asyncio
 import networkx as nx
 import plotly.express as px
 import plotly.graph_objects as go
-from prisma.models import Product, RelatedProduct
 
+from generated.prisma.models import Product, RelatedProduct
 from review_visualizer.db.prisma import PrismaClient
 
 

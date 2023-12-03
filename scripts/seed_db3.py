@@ -8,9 +8,8 @@ from tqdm.asyncio import tqdm as tqdm_async
 
 load_dotenv()
 
-from prisma.errors import UniqueViolationError
-from prisma.types import RelatedProductCreateWithoutRelationsInput
-
+from generated.prisma.errors import UniqueViolationError
+from generated.prisma.types import RelatedProductCreateWithoutRelationsInput
 from review_visualizer.db.prisma import PrismaClient
 
 BATCH_SIZE = 1000

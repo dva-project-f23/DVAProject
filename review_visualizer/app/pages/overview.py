@@ -9,10 +9,10 @@ import streamlit as st
 st.set_page_config(layout="wide")
 
 from dateutil import relativedelta
-from prisma.models import Product
 from st_pages import add_page_title
 from streamlit_searchbox import st_searchbox
 
+from generated.prisma.models import Product
 from moving_average import ma_average
 from review_visualizer.db.prisma import PrismaClient
 from review_visualizer.visualizations.graphs import related_products
