@@ -36,7 +36,7 @@ async def movingavg(asinId, num_months):
 
         smallest_key = min(sentiments, key=lambda x: x)
         largest_key = max(sentiments, key=lambda x: x) + relativedelta.relativedelta(
-            months= num_months//2
+            months=num_months // 2
         )
 
         moving_average = []
@@ -64,7 +64,7 @@ async def movingavg(asinId, num_months):
                 )
             curr = curr + relativedelta.relativedelta(months=1)
 
-        tup = (months_dq[num_months//2], sum_ratings / num_ratings)
+        tup = (months_dq[num_months // 2], sum_ratings / num_ratings)
         moving_average.append(tup)
 
         while curr <= largest_key:
@@ -108,7 +108,7 @@ async def movingavg(asinId, num_months):
                 average_rating = moving_average[len(moving_average) - 1][1]
             else:
                 average_rating = sum_ratings / num_ratings
-            tup = (months_dq[num_months//2], average_rating)
+            tup = (months_dq[num_months // 2], average_rating)
             moving_average.append(tup)
 
         x_list = [t[0] for t in moving_average]
@@ -129,7 +129,10 @@ async def movingavg(asinId, num_months):
                 num_sentiments += curr_sentiment[0] + curr_sentiment[1]
             curr = curr + relativedelta.relativedelta(months=1)
 
-        tup = (months_dq[num_months//2], (pos_sentiments - neg_sentiments) / num_sentiments)
+        tup = (
+            months_dq[num_months // 2],
+            (pos_sentiments - neg_sentiments) / num_sentiments,
+        )
         moving_average.append(tup)
 
         while curr <= largest_key:
@@ -151,13 +154,13 @@ async def movingavg(asinId, num_months):
                 average_sentiment = moving_average[len(moving_average) - 1][1]
             else:
                 average_sentiment = (pos_sentiments - neg_sentiments) / num_sentiments
-            tup = (months_dq[num_months//2], average_sentiment)
+            tup = (months_dq[num_months // 2], average_sentiment)
             moving_average.append(tup)
 
         curr = largest_key
         last = [0, 0]
         while curr >= smallest_key:
-            if (len(total_reviews) != 0):
+            if len(total_reviews) != 0:
                 last = total_reviews[len(total_reviews) - 1]
             if curr in sentiments:
                 curr_sentiment = sentiments[curr]
