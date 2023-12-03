@@ -1,11 +1,11 @@
-import os
 import subprocess
+import sys
 
 
 def generate_prisma_client():
     """Generates the Prisma Client and loads it"""
     print(f"GENERATING PRISMA CLIENT")
-    subprocess.run(["prisma", "generate"])
+    subprocess.check_call(["prisma", "generate"], stdout=sys.stdout, stderr=sys.stderr)
     print(f"GENERATED PRISMA CLIENT")
 
 
