@@ -6,5 +6,5 @@ st.set_page_config(layout="wide")
 
 st.title("README")
 
-with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as f:
+with open(os.path.join(os.getcwd(), "README.md"), "r") as f:
     st.markdown(f.read())

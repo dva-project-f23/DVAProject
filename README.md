@@ -32,3 +32,6 @@ To format the project, run `poe format` in the root directory of the project. Th
 
 ## Virtual Environment
 When you run the `poe` scripts or `poetry` scripts, it should automatically use a virtual environment. If you want to manually activate the virtual environment, run `poetry shell` in the root directory of the project.
+
+## Group Demo Video
+We created a video for how to setup this project and run our application. See this [video](https://youtu.be/2Uk9yU0pOgk).
