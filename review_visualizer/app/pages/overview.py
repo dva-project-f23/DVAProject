@@ -15,6 +15,7 @@ from streamlit_searchbox import st_searchbox
 
 from moving_average import ma_average
 from review_visualizer.db.prisma import PrismaClient
+from review_visualizer.visualizations.graphs import related_products
 
 add_page_title("Overview")
 
@@ -43,6 +44,7 @@ async def search_results(query: str) -> List[SearchResults]:
                     {"reviews": {"some": {"overall": {"gte": 0.0}}}},
                 ]
             },
+            include={"reviews": True},
             take=5,
         )
 
@@ -123,6 +125,19 @@ if search_res:
 
     st.write("**Review Statistics**")
     st.table(reviews_df)
+
+    st.subheader("Related Products")
+    with st.spinner("Loading related products..."):
+        st.plotly_chart(
+            related_products.show(search_res.product, reviews_data["Average"]),
+            use_container_width=True,
+        )
+        st.write(
+            """\
+            **Note:** The graph above shows the top 10 related products. 
+            Darker colors represent a higher normalized price.
+            """
+        )
 
     # choice_date = st.selectbox(
     #     "Graph starting month", [d.strftime("%Y-%m") for d in df["Date"]]
