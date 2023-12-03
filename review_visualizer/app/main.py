@@ -1,8 +1,6 @@
 import os
 
-if os.environ.get("ENV") == "prod":
-    import init_prisma  # Init Prisma Client
-
+import init_prisma  # Init Prisma Client
 import streamlit as st
 from dotenv import load_dotenv
 
