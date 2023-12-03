@@ -5,9 +5,7 @@ import subprocess
 def generate_prisma_client():
     """Generates the Prisma Client and loads it"""
     print(f"GENERATING PRISMA CLIENT")
-    # p = subprocess.Popen(["prisma", "generate"])
-    # p.wait()
-    os.system("prisma generate")
+    subprocess.run(["prisma", "generate"])
     print(f"GENERATED PRISMA CLIENT")
 
 
