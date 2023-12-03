@@ -53,6 +53,10 @@ To run the project, run `poe start-dev` in the root directory of the project. Th
 
 To enable a smoother developer experience, visit the website on `localhost:8501`, click the three dots in the top right corner, and enable "Run on Save". This will automatically reload the app when you save a file.
 
+### Demo Video
+
+We created a video for how to setup this project and run our application. See this [video](https://youtu.be/2Uk9yU0pOgk).
+
 ## Dataset
 
 ### Dataset Link
@@ -71,7 +75,3 @@ A script was used to populate a PostgreSQL database with the dataset from UCSD i
 4. Run `poetry run prisma db push` to create the tables in the database and generate the Prisma client. Alternatively, you can run `poetry run prisma generate` to only generate the Prisma client without pushing the database.
 5. Download the dataset from UCSD and place it in the `scripts` directory.
 6. Run `poetry run python3 scripts/seed_db.py` to seed the database. This will take a while to run. The script will print out the progress as it runs.
-
-## Group Demo Video
-
-We created a video for how to setup this project and run our application. See this [video](https://youtu.be/2Uk9yU0pOgk).
