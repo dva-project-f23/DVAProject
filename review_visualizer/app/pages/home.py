@@ -14,6 +14,6 @@ Team Members:
  - Mert Us
  - Aryan Pariani
  - Shayar Shah
- - Parissa Babolhaveji
+ - Parisa Babolhaveji
 """
 )
