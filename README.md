@@ -4,6 +4,10 @@
 
 Team 21 - DVA Project
 
+## Demo
+
+The application is available publicly [here](https://amazon-review-viz.streamlit.app/)
+
 ## Poetry
 
 This project uses [Poetry](https://python-poetry.org/) for dependency management. To install Poetry, follow the instructions [here](https://python-poetry.org/docs/#installation).
