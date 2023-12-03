@@ -3,6 +3,9 @@
 ## Introduction
 Team 21 - DVA Project
 
+## Dataset Link
+The dataset used was the [Amazon product data](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html) dataset from UCSD. The [5-core electronics reviews](http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz) (9 GB) were used for our application. Product [metadata](http://snap.stanford.edu/data/amazon/productGraph/metadata.json.gz) (11 GB) was also included in the application.
+
 ## Poetry
 This project uses [Poetry](https://python-poetry.org/) for dependency management. To install Poetry, follow the instructions [here](https://python-poetry.org/docs/#installation).
 
