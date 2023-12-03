@@ -1,5 +1,6 @@
 import streamlit as st
-from st_pages import add_page_title
+
+st.set_page_config(layout="wide")
 
 st.title("Amazon Product Review Visualizer")
 st.subheader("DVA Fall 2023 - Team 21")
@@ -13,6 +14,6 @@ Team Members:
  - Mert Us
  - Aryan Pariani
  - Shayar Shah
- - Parissa Babolhaveji
+ - Parisa Babolhaveji
 """
 )

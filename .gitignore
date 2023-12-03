@@ -4,6 +4,8 @@
 ### DVA-Project Specifc ###
 scripts/**/*.json
 *.gz
+random/*
+generated/*
 
 ### Database ###
 *.accdb
@@ -208,6 +210,7 @@ celerybeat.pid
 
 # Environments
 .env*
+.idea
 .venv
 env/
 venv/

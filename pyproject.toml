@@ -17,7 +17,8 @@ streamlit-searchbox = "^0.1.6"
 mysql-connector-python = "^8.2.0"
 tqdm = "^4.66.1"
 prisma = "^0.11.0"
-httpcore = {extras = ["asyncio"], version = "^1.0.2"}
+networkx = "^3.2.1"
+httpcore = { extras = ["asyncio"], version = "^1.0.2" }
 
 [tool.poetry.group.dev.dependencies]
 pyclean = "^2.7.5"
@@ -29,12 +30,17 @@ python-dotenv = "^1.0.0"
 isort = "^5.12.0"
 
 [tool.poe.tasks]
+dev = ["generate", "start-dev"]
 start-dev = "streamlit run review_visualizer/app/main.py"
+generate = "prisma generate"
 clean = "pyclean ."
 blk = "black ."
 fmt = "isort ."
 format = ["blk", "fmt"]
 test = "pytest"
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core"]

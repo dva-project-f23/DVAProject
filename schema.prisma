@@ -10,6 +10,7 @@ generator db {
     interface            = "asyncio"
     recursive_type_depth = 5
     previewFeatures      = ["fullTextIndex", "fullTextSearch"]
+    output               = "./generated/prisma"
 }
 
 enum ReviewSentiment {
@@ -64,4 +65,6 @@ model Product {
     reviews         Review[]
     relatedProducts RelatedProduct[]
     categories      Category[]
+
+    @@index([title(ops: raw("gin_trgm_ops"))], type: Gin, name: "title_idx")
 }
