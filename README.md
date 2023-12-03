@@ -3,19 +3,6 @@
 ## Introduction
 Team 21 - DVA Project
 
-## Dataset
-
-### Dataset Link
-The dataset used was the [Amazon product data](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html) dataset from UCSD. The [5-core electronics reviews](http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz) (9 GB) were used for our application. Product [metadata](http://snap.stanford.edu/data/amazon/productGraph/metadata.json.gz) (11 GB) was also included in the application.
-
-### Populating Database
-A script was used to populate a PostgreSQL database with the dataset from UCSD in order for the application to run smoothly as well as be deployable to the cloud. The steps to accomplish this are outlined below:
-
-1. Install [Poetry](#setup) and install dependencies
-2. Set `DATABASE_URL` environment variable to allow the `seed_db.py` script to insert rows into the database
-3. Run `poetry run prisma db push` to create the table with the appropriate schema and generate a local client
-4. Run `poetry run python3 seed_db.py` to push the dataset to the PostgreSQL database
-
 ## Poetry
 This project uses [Poetry](https://python-poetry.org/) for dependency management. To install Poetry, follow the instructions [here](https://python-poetry.org/docs/#installation).
 
@@ -45,6 +32,23 @@ To format the project, run `poe format` in the root directory of the project. Th
 
 ## Virtual Environment
 When you run the `poe` scripts or `poetry` scripts, it should automatically use a virtual environment. If you want to manually activate the virtual environment, run `poetry shell` in the root directory of the project.
+
+## Dataset
+
+### Dataset Link
+The dataset used was the [Amazon product data](https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html) dataset from UCSD. The [5-core electronics reviews](http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz) (9 GB) were used for our application. Product [metadata](http://snap.stanford.edu/data/amazon/productGraph/metadata.json.gz) (11 GB) was also included in the application.
+
+### Populating Database
+A script was used to populate a PostgreSQL database with the dataset from UCSD in order for the application to run smoothly as well as be deployable to the cloud. The steps to accomplish this are outlined below:
+
+1. Install [Poetry](#setup) and install dependencies
+2. If required, change the database provider in `schema.prisma` file. The default is PostgreSQL. However, any of the providers listed [here](https://www.prisma.io/docs/reference/database-reference/supported-databases) should work. Please note that some of the configuration options may need to be changed in the `schema.prisma` file. For example, a `GIN` index is used in the `schema.prisma` file. This is only supported by PostgreSQL. Other providers may require a different index type.
+3. Set `DATABASE_URL` environment variable to the URL of the database. This can be done by either:
+   1. running `export DATABASE_URL='postgres://[username]:[password]@[host]:[port]/[database]'` in the terminal
+   2. adding `DATABASE_URL='postgres://[username]:[password]@[host]:[port]/[database]'` to a `.env` file
+4. Run `poetry run prisma db push` to create the tables in the database and generate the Prisma client. Alternatively, you can run `poetry run prisma generate` to only generate the Prisma client without pushing the database.
+5. Download the dataset from UCSD and place it in the `scripts` directory.
+6. Run `poetry run python3 scripts/seed_db.py` to seed the database. This will take a while to run. The script will print out the progress as it runs.
 
 ## Group Demo Video
 We created a video for how to setup this project and run our application. See this [video](https://youtu.be/2Uk9yU0pOgk).
