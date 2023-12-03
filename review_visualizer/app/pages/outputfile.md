@@ -70,8 +70,7 @@ The project detailed in the "DVA Final Report" is titled "Dynamic Amazon Product
     - *Interactive Graph*: Allows users to explore related products visually, with nodes representing individual products and edges indicating relationships.
 
 - **Features**:
-    - *Dynamic Filtering*: Users can filter the graph based on criteria like price range, ratings, or specific product features.
-    - *Product Comparison*: Facilitates easy comparison of related products by displaying key metrics like average rating and price.
+    - *Product Comparison*: Facilitates easy comparison of related products by displaying them in a graph representation.
 
 - **Benefits**:
     - *Discoverability*: Enhances product discoverability, guiding users to explore alternatives they might not have found independently.
